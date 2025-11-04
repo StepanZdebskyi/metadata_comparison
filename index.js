@@ -3,7 +3,6 @@ import 'dotenv/config'; // Load variables from .env file
 
 import runQueries from './utils/runQueries.js';
 
-// 1. Get credentials from environment variables
 const username = encodeURIComponent(process.env.DB_USERNAME);
 const password = encodeURIComponent(process.env.DB_PASSWORD);
 const cluster = process.env.DB_CLUSTER;
