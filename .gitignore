@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+# Build
+dist/
+build/
+# Environment Variables
+.env
+.env.local
+.env.*.local
+# IDE
+.vscode/
+# Temporary Files
+.tmp/
+#Others
+.DS_Store
