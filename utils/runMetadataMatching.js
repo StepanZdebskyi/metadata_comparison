@@ -39,6 +39,7 @@ async function runMetadataMatching(metadataMd1_collection, metadataMd3_collectio
         const resultsMd3Only = metadataMd3_result.filter(item1 => !identitiesFromMd1.has(item1.identity));
 
         console.log(`Found ${resultsMd1Only.length} items that are only in md1.`);
+        console.log(`Found ${resultsMd3Only.length} items that are only in md3.`);
 
         const logFilePath = './logs/metadata.log';
         const logHeader_Md1 = `Found ${resultsMd1Only.length} metadata that are only in md1 \n --- Only in md1 --- `;

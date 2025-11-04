@@ -127,8 +127,8 @@ async function runDependencyMatchingByIdentity(dependenciesMd1Collection, depend
         });
 
         const logFilePath = './logs/dependencies.log';
-        const logHeader_Md1 = `Found ${dependencyMd1_Only.length} dependencies that are only in md1 \n --- Only in md1 --- `;
-        const logHeader_Md3 = `Found ${dependencyMd3_Only.length} dependencies that are only in md3 \n --- Only in md1 --- `;
+        const logHeader_Md1 = `Found ${dependencyMd1_Only.length} dependencies that are only in md1`;
+        const logHeader_Md3 = `Found ${dependencyMd3_Only.length} dependencies that are only in md3`;
 
         console.log("--- Dependencies Comparison Complete BY IDENTITY ---");
         console.log(`Total Matches: ${matchingDocs_Dependency.length}`);
@@ -147,7 +147,7 @@ async function runDependencyMatchingByIdentity(dependenciesMd1Collection, depend
             })
             .join('\n');
 
-        const logString = logHeader_Md1 + '\n' + logMd1 + '\n' + logHeader_Md3 + '\n' + logMd3;
+        const logString = logHeader_Md1 + '\n --- Only in md1 ---' + '\n' + logMd1 + '\n' + logHeader_Md3 + '\n --- Only in md3 ---' + '\n' + logMd3;
 
         saveLogsToFile(logString, logFilePath);
     }
