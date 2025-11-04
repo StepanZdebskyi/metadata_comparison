@@ -10,7 +10,7 @@ const cluster = process.env.DB_CLUSTER;
 const uri = `mongodb+srv://${username}:${password}@${cluster}`;
 const client = new MongoClient(uri);
 
-const metadataName = "Field"//process.argv[2].toString();
+const metadataName = process.argv[2].toString();
 
 const refmodelMd1 = process.env.MD1_REFMODEL_ID.toString();
 const refmodelMd3 = process.env.MD3_REFMODEL_ID.toString();
