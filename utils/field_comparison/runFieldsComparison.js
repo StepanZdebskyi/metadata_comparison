@@ -69,8 +69,8 @@ async function runFieldsComparison(metadataMd1_collection, metadataMd3_collectio
         }));
 
         const discrepancies = [];
-        let discrepanciesCount = 0; 
-        const keysToCompare = ['sf', 'nodeDetails']; // Top-level properties to deep-compare
+        let discrepanciesCount = 0;
+        const keysToCompare = ['sf', 'nodeDetails', 'summary']; // Top-level properties to deep-compare
 
         for (const pair of matching_fields) {
             const diff = {
@@ -100,33 +100,44 @@ async function runFieldsComparison(metadataMd1_collection, metadataMd3_collectio
                     continue;
                 }
 
-                // Compare individual properties within the section (e.g., within 'sf' or 'nodeDetails')
-                const allKeys = new Set([
-                    ...Object.keys(md1Obj),
-                    ...Object.keys(md3Obj)
-                ]);
+                if (key === 'summary' && (md1Obj.toString() !== md3Obj.toString())) {
+                    diff.differences[key] = {
+                        path: key,
+                        value_md1: md1Obj,
+                        value_md3: md3Obj
+                    };
+                    foundDifference = true;
+                }
 
-                for (const propKey of allKeys) {
-                    // We want to skip comparing internal MongoDB fields like '_id'
-                    if (propKey === '_id') continue;
+                if (key !== 'summary') {
+                    // Compare individual properties within the section (e.g., within 'sf' or 'nodeDetails')
+                    const allKeys = new Set([
+                        ...Object.keys(md1Obj),
+                        ...Object.keys(md3Obj)
+                    ]);
 
-                    const md1Value = md1Obj[propKey];
-                    const md3Value = md3Obj[propKey];
+                    for (const propKey of allKeys) {
+                        // We want to skip comparing internal MongoDB fields like '_id'
+                        if (propKey === '_id') continue;
 
-                    // NOTE: Simple comparison (===) works for primitive types (string, number, boolean)
-                    // but complex objects/arrays need deep comparison. We'll use JSON.stringify for a safe
-                    // comparison of potentially complex objects/dates for this utility script.
+                        const md1Value = md1Obj[propKey];
+                        const md3Value = md3Obj[propKey];
 
-                    if (JSON.stringify(md1Value) !== JSON.stringify(md3Value)) {
-                        const fullPath = `${key}.${propKey}`;
+                        // NOTE: Simple comparison (===) works for primitive types (string, number, boolean)
+                        // but complex objects/arrays need deep comparison. We'll use JSON.stringify for a safe
+                        // comparison of potentially complex objects/dates for this utility script.
 
-                        // Store the difference
-                        diff.differences[fullPath] = {
-                            path: fullPath,
-                            value_md1: md1Value,
-                            value_md3: md3Value
-                        };
-                        foundDifference = true;
+                        if (JSON.stringify(md1Value) !== JSON.stringify(md3Value)) {
+                            const fullPath = `${key}.${propKey}`;
+
+                            // Store the difference
+                            diff.differences[fullPath] = {
+                                path: fullPath,
+                                value_md1: md1Value,
+                                value_md3: md3Value
+                            };
+                            foundDifference = true;
+                        }
                     }
                 }
             }
